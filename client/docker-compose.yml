@@ -1,9 +1,9 @@
 cadvisor:
   image: google/cadvisor
   name: cadvisorsrv
-  command: -storage_driver=influxdb -storage_driver_db=cadvisordb -storage_driver_host=influxsrv:8088
+  command: -storage_driver=influxdb -storage_driver_db=cadvisordb -storage_driver_host=influxsrv:8086
   ports:
-    - "8085:8080"
+    - "8084:8080"
   volumes:
     - /:/rootfs:ro
     - /var/run:/var/run:rw
@@ -12,9 +12,9 @@ cadvisor:
   links:
     - influxdbAmbassadorClient:influxsrv
 influxdbAmbassadorClient:
-  image: svendowideit/ambassador
+  image: ctlc/ambassador
   name: influxdb_ambassador_client
-  ports:
-    - "8088:8087"
   expose:
     - "8088"
+  environment:
+     - INFLUXSRV_PORT_8086_TCP=tcp://x.x.x.x:8086
