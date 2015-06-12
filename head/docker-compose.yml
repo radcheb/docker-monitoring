@@ -9,6 +9,8 @@ influxsrv:
     - "8099"
   environment:
     - PRE_CREATE_DB=cadvisordb
+  volumes:
+    - /data/influxdb/data:/data
 cadvisor:
   image: google/cadvisor
   name: cadvisorsrv
@@ -35,3 +37,10 @@ grafana:
     - INFLUXDB_NAME=cadvisordb
     - INFLUXDB_USER=root
     - INFLUXDB_PASS=root
+influxdbAmbassador:
+  image: svendowideit/ambassador
+  name: influxdb_ambassador
+  links:
+    - influxsrv:influxsrv
+  ports:
+    - 8087:8086
